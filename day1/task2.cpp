@@ -74,6 +74,7 @@ class NonSolar:public Inverter{
 };
 int main()
 {
+	int n;cin>>n;
      Solar PCU(true,true,2,8,1);
     //  ,GTI(false,100,27,1),Regalia(true,20,2,1);
     
