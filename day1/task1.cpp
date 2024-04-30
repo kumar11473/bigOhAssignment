@@ -68,11 +68,12 @@ class Pm:public Minister{
         string getMinistry(){
             return ministry;
         }    
+        
+    
 };
 
 class Commissioner:public Person{
     public:
-        
     // functioon overloading
     Commissioner(int age,string name):Person(age,name){}
     bool canArrest(Mp mp){
@@ -97,10 +98,11 @@ class Commissioner:public Person{
 
 
 int main(){
-    Person p(24,"john");
+    // Person p(24,"john");
     //  Driver d(12,"jack");
     Minister nitin(55,"nitin gadkari","surat",100000,"Highway");
     nitin.spendMoney(200000);
+    cout<<nitin.getConstituency()<<endl;
     Pm  modi(60,"narendra","varanasi",100000000,"prime",true);
     Commissioner dsp(35,"chulbul pandey");
     if(dsp.canArrest(modi,nitin)){
