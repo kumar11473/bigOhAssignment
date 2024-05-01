@@ -2,20 +2,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// class Grid{
-//     int sellBack;
+class Grid{
+    int capacity;
+    string location;
+    Grid(int cap,string loc){
+        capacity=cap;
+        location=loc;
+    }
+    int getCapacity(){
+        return capacity;
+    }
     
-// }
-vector<string> v={"PCU","GTI","Regalia"};
+    string getLocation(){
+        return location;
+    }
+    
+};
+
+class SolarPanel{
+    int power; // how much power each panel generate
+    int panelSize;
+    int getPanelPower(){
+        return power;
+    }
+};
+
+class Battery{
+    int capacity;
+    int storedEnergy;
+    
+    Battery(int cap,int ene):capacity(cap),storedEnergy(ene){};
+    int getCapacity(){
+        return capacity;
+    }
+    int storedEnergy(){
+        return storedEnergy;
+    }
+    
+};
+
+
 
 class Inverter{
     public:
-        
         string type;
         bool isStoring;
         int current;
         int operatingVoltage;
-        
+        Inverter(string type,bool isStoring,int curr,int volt):
+            type(type),isStoring(isStoring),current(curr),volt(volt){};
+            
         int getPowerRating(){
              return (current*operatingVoltage);
         }
@@ -25,24 +61,17 @@ class Inverter{
 
 class Solar:public Inverter{
        public:
-        int panelSize;
-        bool gridOn;
-        Solar(bool gn, bool isStoring,int curr,int volt,int panelSize){  // have to tell isStoring or not
+       
+        Solar(Battery battery){
             
-            if(!isStoring) 
-                gridOn=false;
-            else
-                gridOn=gn;
-                
-                
-            type="solar";
+        }
+        Solar(bool isStoring,int curr,int volt,int panelSize){  // have to tell isStoring or not
             isStoring=isStoring,
             current=curr;
             operatingVoltage=volt;
             panelSize=panelSize;
         }
-           
-            
+    
         int getPanelSize(){
             return panelSize;
         }    
@@ -54,15 +83,12 @@ class Solar:public Inverter{
                 cout<<"Not a grid on";
             }
         }
-        
-        
 };
+
 
 class NonSolar:public Inverter{
     public:
-        
-        bool hasSolarPanel=false;
-         
+        bool hasSolarPanel=false; 
         NonSolar(int curr,int volt){
             type="nonsolar";
             isStoring=true;
@@ -72,9 +98,28 @@ class NonSolar:public Inverter{
         }
         
 };
+
+
+class PCU:public Solar{
+    
+};
+
+class GTI:public Solar{
+    
+};
+
+
+class Zelio:public NonSolar{
+    
+};
+
+
+class Icruze:public NonSolar{
+    
+}
+
 int main()
 {
-	int n;cin>>n;
      Solar PCU(true,true,2,8,1);
     //  ,GTI(false,100,27,1),Regalia(true,20,2,1);
     
