@@ -19,6 +19,8 @@ class Media
 public:
     string mediaType;
     int mediaSize;
+    Media(){}
+    Media(string s, int ms) : mediaType(s), mediaSize(ms) {}
 };
 
 class User : public Person
@@ -31,9 +33,11 @@ public:
 class Contact : public Person
 {
 public:
+    Status status;
     Contact(string name, long long cont) : Person(name, cont) {}
 };
 
+// user management
 class UserManagement
 {
 public:
@@ -133,6 +137,7 @@ public:
     string caption;
     Media media;
     int viewCount;
+    Status(){}
 };
 
 class StatusManagement
@@ -163,8 +168,10 @@ public:
         }
     }
 
-    void viewStatus(Contact contact, Status status)
+    void viewStatus(Contact contact)
     {
+        cout << "status type" << contact.status.media.mediaType;
+        cout << "Status text" << contact.status.caption;
     }
 };
 
@@ -175,19 +182,12 @@ public:
     string content;
     bool sendStatus;
     bool readStatus;
-    string multiMediaId = "";
+    Media media;
 
-    Chat(time_t time, string cont, bool sStatus, bool rStatus, string mMId) : sent_time(time),
-                                                                              content(cont), sendStatus(sStatus), readStatus(rStatus), multiMediaId(mMId) {}
-};
+    Chat(time_t time, string cont, bool sStatus, bool rStatus, string mMId, Media media) : sent_time(time),
+                                                                                           content(cont), sendStatus(sStatus), readStatus(rStatus), media(media) {}
 
-class Chat
-{
-public:
-    string content;
-    time_t sentTime;
-    bool sendStatus;
-    bool readStatus;
+    Chat(string cont, time_t tm, Media media) : content(cont), sent_time(tm), media(media) {}
 };
 
 class ChatManagement
@@ -195,8 +195,76 @@ class ChatManagement
 public:
     unordered_map<long long, vector<Chat>> chatHistory;
 
+    // to convert time_t date and time to human readable format dd/mm/yyyy
+    string time_t_to_StringFormat(time_t time)
+    {
+        const char *datetimeString = "2023-06-17 12:36:51";
+        const char *format = "%Y-%m-%d %H:%M:%S";
+
+        char buffer[90];
+        struct tm *timeinfo = localtime(&time);
+        strftime(buffer, sizeof(buffer), format, timeinfo);
+        return buffer;
+    }
+
     void showAllChat()
     { // print contacts with whoom user has ever chatted. (eg. )
+        int index = 0;
+        for (auto x : chatHistory)
+        {
+            cout << index << " " << x.first << endl;
+            for (auto y : x.second)
+            {
+                cout << "time:" << time_t_to_StringFormat(y.sent_time);
+                cout << "You: " << y.content << endl;
+                cout << "status:" << y.sendStatus;
+            }
+            index++;
+        }
+    }
+    // deleting all chats of a particular number
+    void deleteAllChat()
+    {
+        int index = 0;
+        for (auto x : chatHistory)
+        {
+            cout << index << " " << x.first << endl;
+            index++;
+        }
+
+        int n = 0;
+        cout << "Select contact to delete chat ";
+        cin >> n;
+        if (n > chatHistory.size())
+        {
+            cout << "Invalid entry";
+            return;
+        }
+        for (auto it = chatHistory.begin(); it != chatHistory.end(); it++)
+        {
+            n--;
+            if (n == 0)
+            {
+                chatHistory.erase(it);
+                break;
+            }
+        }
+    }
+
+    void sendChat(Contact contact)
+    {
+        cout << "Enter message ";
+        string content;
+        cin >> content;
+        time_t now = time(0);
+        string s;
+        cout << "Enter media type ";
+        cin >> s;
+        Media media(s, 30);
+
+        Chat chat(content, now, media);
+
+        chatHistory[contact.contactNum].push_back(chat);
     }
 };
 
