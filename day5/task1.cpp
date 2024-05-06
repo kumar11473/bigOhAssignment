@@ -13,6 +13,7 @@ public:
 
     Person(string name, long long cont) : name(name), contactNum(cont) {}
 };
+
 class Media
 {
 public:
@@ -26,11 +27,6 @@ public:
     // vector<Contact> contactList;
     string password;
 };
-
-// class Contact:public Person{
-//     public:
-//        //chathistory
-// };
 
 class Contact : public Person
 {
@@ -66,6 +62,12 @@ public:
     }
     void logIn(string cont, string pass)
     {
+
+        if (db.find(cont) == db.end())
+        {
+            cout << "Invalid phone number ";
+            return;
+        }
         if (db[cont].second == pass)
         {
             isLoggedIn = true;
@@ -100,25 +102,27 @@ public:
         }
     }
 
-    void editcontact() 
+    void editcontact(Contact contact)
     {
-                    // replace old contact ojbect with new Contact obj.
-        string name, pass, ans;
+        // replace old contact ojbect with new Contact obj.
+
+        int ind = -1;
+        for (int i = 0; i < yourContacts.size(); i++)
+        {
+            if (yourContacts[i].contactNum == contact.contactNum)
+            {
+                ind = i;
+                return;
+            }
+        }
+        string name, ans;
         long long cont;
         cout << "Enter new name ";
         cin >> name;
         cout << "Enter new contact number";
         cin >> cont;
-        Contact newContact(name,cont);
-        
-        
-        int ind=-1;
-        for(int i=0;i<yourContacts.size();i++){
-            if(yourContacts[i].contactNum==cont){
-                yourContacts[i]=newContact;
-                return;
-            }
-        }
+        Contact newContact(name, cont);
+        yourContacts[ind] = newContact;
     }
 };
 
@@ -164,9 +168,41 @@ public:
     }
 };
 
+class Chat
+{
+public:
+    time_t sent_time;
+    string content;
+    bool sendStatus;
+    bool readStatus;
+    string multiMediaId = "";
+
+    Chat(time_t time, string cont, bool sStatus, bool rStatus, string mMId) : sent_time(time),
+                                                                              content(cont), sendStatus(sStatus), readStatus(rStatus), multiMediaId(mMId) {}
+};
+
+class Chat
+{
+public:
+    string content;
+    time_t sentTime;
+    bool sendStatus;
+    bool readStatus;
+};
+
+class ChatManagement
+{
+public:
+    unordered_map<long long, vector<Chat>> chatHistory;
+
+    void showAllChat()
+    { // print contacts with whoom user has ever chatted. (eg. )
+    }
+};
+
 int main()
 {
-    Contact c1("sushant",9876678760);
+    Contact c1("sushant", 9876678760);
     UserManagement user1;
 
     return 0;
