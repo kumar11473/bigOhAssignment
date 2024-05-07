@@ -8,7 +8,7 @@ public:
     string name;
     long long contactNum;
     string about = "";
-
+    Person(){}
     Person(string name, long long cont, string about) : name(name), contactNum(cont), about(about) {}
 
     Person(string name, long long cont) : name(name), contactNum(cont) {}
@@ -19,15 +19,22 @@ class Media
 public:
     string mediaType;
     int mediaSize;
-    Media(){}
+    Media()
+    {
+        mediaSize = 0;
+        mediaType = "";
+    }
     Media(string s, int ms) : mediaType(s), mediaSize(ms) {}
 };
 
-class User : public Person
+class Status
 {
 public:
-    // vector<Contact> contactList;
-    string password;
+    string statusId; // because status can be multiple and if we want to remove a particular status we will use statusId
+    string caption;
+    Media media;
+    int viewCount;
+    Status() : statusId(""), caption(""), viewCount(0) {}
 };
 
 class Contact : public Person
@@ -37,6 +44,15 @@ public:
     Contact(string name, long long cont) : Person(name, cont) {}
 };
 
+class User : public Person
+{
+public:
+    // vector<Contact> contactList;
+    string password;
+
+    User():Person(){}
+};
+
 // user management
 class UserManagement
 {
@@ -44,10 +60,10 @@ public:
     vector<Contact> yourContacts;
     unordered_map<string, pair<string, string>> db; // <contactNum,<name,password>>
     bool isLoggedIn = false;
+    UserManagement(){}
 
-    void singUp()
+    void signUp(User* user)
     {
-
         string nm, cont, pass;
         cout << "Enter Contact Number ";
         cin >> cont;
@@ -66,7 +82,6 @@ public:
     }
     void logIn(string cont, string pass)
     {
-
         if (db.find(cont) == db.end())
         {
             cout << "Invalid phone number ";
@@ -128,16 +143,6 @@ public:
         Contact newContact(name, cont);
         yourContacts[ind] = newContact;
     }
-};
-
-class Status
-{
-public:
-    string statusId; // because status can be multiple and if we want to remove a particular status we will use statusId
-    string caption;
-    Media media;
-    int viewCount;
-    Status(){}
 };
 
 class StatusManagement
@@ -268,10 +273,37 @@ public:
     }
 };
 
+class WhatsApp
+{
+public:
+    User *user1 ;
+    UserManagement *usermgnt;
+
+    
+
+
+    WhatsApp(){
+        user1 = new User();
+        usermgnt = new UserManagement();
+        usermgnt->signUp(user1);
+
+
+    }
+
+    void userCreation(){
+        usermgnt->logIn(user1);
+    }
+    
+
+
+
+
+};
+
 int main()
 {
-    Contact c1("sushant", 9876678760);
-    UserManagement user1;
+    WhatsApp myWhatsapp;
+    myWhatsapp.
 
     return 0;
 }

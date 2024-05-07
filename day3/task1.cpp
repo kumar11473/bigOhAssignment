@@ -12,12 +12,13 @@ class Person{
     string name;
     string role;
     string userId;
+    Person(string name,string role,string userId):name(name),role(role),userId(userId) {}
 };
 
 class Admin:public Person{
     public:
     	string authlevel;
-    	Admin(string name, string role, string userId):name(name),role(role),userId(userId),authlevel(authlevel){}
+    	Admin(string name, string role, string userId):Person(name,role,userId),authlevel(authlevel){}
 };
 
 class User:public Person{
@@ -38,7 +39,7 @@ class User:public Person{
 
 
 class Brick{
-    vector<<string,vector<string>> comments; // a single user can have multiple comments
+    vector<pair<string,vector<string>>> comments; // a single user can comment multiple times.
     public:
         string caption;
         string ownerId;
@@ -61,9 +62,6 @@ class Brick{
     void flagIt( ){
     	isVisible=true;
     }
-    
-    
-    
 };
 int main()
 {

@@ -25,8 +25,10 @@ public:
 
 class Librarian : public Person
 {
+    public:
 
-public:
+    Librarian()
+
 };
 
 class Book
@@ -75,12 +77,7 @@ public:
     bool isCheckedOut;
     time_t dueDate;
     BookItem(string title, string author, string subjectCategory, string publicationDate, int rackNumber, string uniqueId)
-        : Book(title, author, subjectCategory, publicationDate, rackNumber, uniqueId)
-    {
-        isReserved = false;
-        isCheckedOut = false;
-        dueDate = 0;
-    }
+        : Book(title, author, subjectCategory, publicationDate, rackNumber, uniqueId),isReserved(false),isCheckedOut(false),dueDate(0){}
 
     void getIsReserved()
     {
@@ -217,7 +214,7 @@ public:
     vector<BookItem> result = {};
 
     // searching of books using different parameter
-    vector<BookItem> search()
+    vector<BookItem> viewCatalogue()
     {
         cout << "select option ";
         cout << "press 1 to search by title " << endl
